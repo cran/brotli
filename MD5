@@ -1,11 +1,12 @@
-da417ae75595d666e1d26b9a726fcaf1 *DESCRIPTION
+d7a88e9fdc7397903e34514fb53eccc8 *DESCRIPTION
 e337d355e4184791b1a349df6b6b7376 *NAMESPACE
 3afb35c855f57ecdb87f214a8f52499d *R/brotli.R
 bd907cf736207d47c8922a5d2a7d8abe *build/vignette.rds
 3f8a10433a5b359272f6f5f69445e21b *inst/doc/brotli-2015-09-22.pdf
 5ed36955da01a55f7bbeb4c1155734d7 *inst/doc/brotli-2015-09-22.pdf.asis
 6ce7c6895f7e34148be9a9eacfa18def *man/brotli.Rd
-3867ed9ea1142511b172b85ae6ca0d8d *src/Makevars
+0c3de17a1d608cd0fa7a3daa36dc78a0 *src/Makevars
+dc67ce46219e4fc4e016ceb43413f156 *src/config.h
 fbf7812e65f4842d489aef6a7f5a687f *src/dec/bit_reader.c
 600dc07482e065d2fa33b002f9191dda *src/dec/bit_reader.h
 426184ba25d0a66c0dfff3598695c383 *src/dec/context.h
