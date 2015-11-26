@@ -23,8 +23,8 @@
 /* Represents the range of values belonging to a prefix code: */
 /* [offset, offset + 2^nbits) */
 struct PrefixCodeRange {
-  int16_t offset;
-  int8_t nbits;
+  uint16_t offset;
+  uint8_t nbits;
 };
 
 static const struct PrefixCodeRange kBlockLengthPrefixCode[] = {

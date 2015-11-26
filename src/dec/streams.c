@@ -93,11 +93,13 @@ BrotliOutput BrotliFileOutput(FILE* f) {
   return out;
 }
 
-int BrotliNullOutputFunction(void* data, const uint8_t* buf, size_t count) {
+int BrotliNullOutputFunction(void* data , const uint8_t* buf, size_t count) {
+  BROTLI_UNUSED(data);
+  BROTLI_UNUSED(buf);
   return (int)count;
 }
 
-BrotliOutput BrotliNullOutput() {
+BrotliOutput BrotliNullOutput(void) {
   BrotliOutput out;
   out.cb_ = BrotliNullOutputFunction;
   out.data_ = NULL;

@@ -1,7 +1,7 @@
 Package: brotli
 Type: Package
 Title: A Compression Format Optimized for the Web
-Version: 0.3
+Version: 0.4
 Authors@R: c(
     person("Jeroen", "Ooms", ,"jeroen.ooms@stat.ucla.edu", role = c("aut", "cre")),
     person("Google, Inc", role = c("aut","cph"), comment = "Brotli C++ library")
@@ -13,12 +13,12 @@ License: Apache License 2.0
 URL: http://www.ietf.org/id/draft-alakuijala-brotli
         https://github.com/google/brotli
 BugReports: http://github.com/jeroenooms/brotli/issues
-VignetteBuilder: R.rsp
-Suggests: R.rsp
+VignetteBuilder: knitr, R.rsp
+Suggests: knitr, R.rsp, microbenchmark, ggplot2
 NeedsCompilation: yes
-Packaged: 2015-10-04 15:07:31 UTC; jeroen
+Packaged: 2015-11-25 19:22:57 UTC; jeroen
 Author: Jeroen Ooms [aut, cre],
   Google, Inc [aut, cph] (Brotli C++ library)
 Maintainer: Jeroen Ooms <jeroen.ooms@stat.ucla.edu>
 Repository: CRAN
-Date/Publication: 2015-10-06 09:18:29
+Date/Publication: 2015-11-26 08:33:03
