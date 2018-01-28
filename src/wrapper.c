@@ -1,5 +1,5 @@
-#include "enc/encode.h"
-#include "dec/decode.h"
+#include "brotli/encode.h"
+#include "brotli/decode.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -7,12 +7,19 @@
 #define STRICT_R_HEADERS
 #define R_NO_REMAP
 #include <Rinternals.h>
+#include <R_ext/Visibility.h>
 
-SEXP R_brotli_compress(SEXP x, SEXP quality, SEXP lgwin){
+attribute_visible SEXP R_brotli_compress(SEXP x, SEXP quality, SEXP lgwin){
 
+  uint32_t qual = INTEGER(quality)[0];
+  uint32_t window = INTEGER(lgwin)[0];
+  if(qual < BROTLI_MIN_QUALITY || qual > BROTLI_MAX_QUALITY)
+    Rf_error("Invalid value for qual:%d", qual);
+  if(window < BROTLI_MIN_WINDOW_BITS || window > BROTLI_MAX_WINDOW_BITS)
+    Rf_error("Invalid value for lgwin:%d", window);
   BrotliEncoderState* state = BrotliEncoderCreateInstance(0, 0, 0);
-  BrotliEncoderSetParameter(state, BROTLI_PARAM_QUALITY, INTEGER(quality)[0]);
-  BrotliEncoderSetParameter(state, BROTLI_PARAM_LGWIN, INTEGER(lgwin)[0]);
+  BrotliEncoderSetParameter(state, BROTLI_PARAM_QUALITY, qual);
+  BrotliEncoderSetParameter(state, BROTLI_PARAM_LGWIN, window);
 
   uint8_t * buf = NULL;
   size_t total_out = 0;
@@ -46,7 +53,7 @@ SEXP R_brotli_compress(SEXP x, SEXP quality, SEXP lgwin){
   return output;
 }
 
-SEXP R_brotli_decompress(SEXP x){
+attribute_visible SEXP R_brotli_decompress(SEXP x){
 
   /* init input */
   const uint8_t* next_in = RAW(x);
@@ -55,25 +62,25 @@ SEXP R_brotli_decompress(SEXP x){
   /* init output */
   size_t total_out = 0;
   size_t bufsize = 256;
-  BrotliState* state = BrotliCreateState(NULL, NULL, NULL);
-  BrotliResult res = BROTLI_RESULT_NEEDS_MORE_OUTPUT;
+  BrotliDecoderState* state = BrotliDecoderCreateInstance(NULL, NULL, NULL);
+  BrotliDecoderResult res = BROTLI_DECODER_RESULT_NEEDS_MORE_OUTPUT;
   uint8_t * buf = NULL;
-  while(res == BROTLI_RESULT_NEEDS_MORE_OUTPUT) {
+  while(res == BROTLI_DECODER_RESULT_NEEDS_MORE_OUTPUT) {
     buf = realloc(buf, bufsize);
     size_t available_out = bufsize - total_out;
     uint8_t * next_out = buf + total_out;
-    res = BrotliDecompressStream(
+    res = BrotliDecoderDecompressStream(state,
       &available_in, &next_in, &available_out,
-      &next_out, &total_out, state);
-    bufsize = 2 * bufsize;
-    //Rprintf("available_in: %9d - available_out: %9d - total_out: %9d\n", available_in, available_out, total_out);
+      &next_out, &total_out);
+      bufsize = 2 * bufsize;
+      //Rprintf("available_in: %9d - available_out: %9d - total_out: %9d\n", available_in, available_out, total_out);
   }
-  BrotliDestroyState(state);
-  if(res != BROTLI_RESULT_SUCCESS){
+  BrotliDecoderDestroyInstance(state);
+  if(res != BROTLI_DECODER_RESULT_SUCCESS){
     free(buf);
-    if(res == BROTLI_RESULT_NEEDS_MORE_INPUT)
+    if(res == BROTLI_DECODER_RESULT_NEEDS_MORE_INPUT)
       Rf_error("Botli decode failed: incomplete input");
-    if(res == BROTLI_RESULT_ERROR)
+    if(res == BROTLI_DECODER_RESULT_ERROR)
       Rf_error("Botli decode failed: bad data");
     Rf_error("Botli decode failed: unknown error");
   }
