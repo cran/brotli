@@ -90,3 +90,15 @@ attribute_visible SEXP R_brotli_decompress(SEXP x){
   free(buf);
   return output;
 }
+
+static const R_CallMethodDef CallEntries[] = {
+  {"R_brotli_compress",   (DL_FUNC) &R_brotli_compress,   3},
+  {"R_brotli_decompress", (DL_FUNC) &R_brotli_decompress, 1},
+  {NULL, NULL, 0}
+};
+
+void R_init_brotli(DllInfo *dll) {
+  R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+  R_useDynamicSymbols(dll, FALSE);
+}
+
