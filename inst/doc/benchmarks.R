@@ -1,8 +1,8 @@
-## ----setup, include = FALSE----------------------------------------------
+## ----setup, include = FALSE---------------------------------------------------
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(fig.width=8, fig.height=4, fig.align = "center") 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(brotli)
 library(ggplot2)
 
@@ -16,13 +16,13 @@ y2 <- memCompress(x, "bzip2")
 y3 <- memCompress(x, "xz")
 y4 <- brotli_compress(x)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 stopifnot(identical(x, memDecompress(y1, "gzip")))
 stopifnot(identical(x, memDecompress(y2, "bzip2")))
 stopifnot(identical(x, memDecompress(y3, "xz")))
 stopifnot(identical(x, brotli_decompress(y4)))
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # Combine data
 alldata <- data.frame (
   algo = c("gzip", "bzip2", "xz (lzma2)", "brotli"),
@@ -33,7 +33,7 @@ ggplot(alldata, aes(x = algo, fill = algo, y = ratio)) +
   geom_bar(color = "white", stat = "identity") +
   xlab("") + ylab("Compressed ratio (less is better)")
 
-## ---- eval = require(microbenchmark)-------------------------------------
+## ---- eval = require(microbenchmark)------------------------------------------
 library(microbenchmark)
 bm <- microbenchmark(
   memDecompress(y1, "gzip"),
@@ -48,7 +48,7 @@ ggplot(alldata, aes(x = algo, fill = algo, y = decompression)) +
   geom_bar(color = "white", stat = "identity") +
   xlab("") + ylab("Decompression time (less is better)")
 
-## ---- eval = require(microbenchmark)-------------------------------------
+## ---- eval = require(microbenchmark)------------------------------------------
 library(microbenchmark)
 bm <- microbenchmark(
   memCompress(x, "gzip"),
