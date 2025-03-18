@@ -34,32 +34,32 @@ ggplot(alldata, aes(x = algo, fill = algo, y = ratio)) +
   xlab("") + ylab("Compressed ratio (less is better)")
 
 ## ----eval = require(microbenchmark)-------------------------------------------
-library(microbenchmark)
-bm <- microbenchmark(
-  memDecompress(y1, "gzip"),
-  memDecompress(y2, "bzip2"),
-  memDecompress(y3, "xz"),
-  brotli_decompress(y4),
-  times = 1000
-)
-
-alldata$decompression <- summary(bm)$median
-ggplot(alldata, aes(x = algo, fill = algo, y = decompression)) + 
-  geom_bar(color = "white", stat = "identity") +
-  xlab("") + ylab("Decompression time (less is better)")
+# library(microbenchmark)
+# bm <- microbenchmark(
+#   memDecompress(y1, "gzip"),
+#   memDecompress(y2, "bzip2"),
+#   memDecompress(y3, "xz"),
+#   brotli_decompress(y4),
+#   times = 1000
+# )
+# 
+# alldata$decompression <- summary(bm)$median
+# ggplot(alldata, aes(x = algo, fill = algo, y = decompression)) +
+#   geom_bar(color = "white", stat = "identity") +
+#   xlab("") + ylab("Decompression time (less is better)")
 
 ## ----eval = require(microbenchmark)-------------------------------------------
-library(microbenchmark)
-bm <- microbenchmark(
-  memCompress(x, "gzip"),
-  memCompress(x, "bzip2"),
-  memCompress(x, "xz"),
-  brotli_compress(x),
-  times = 20
-)
-
-alldata$compression <- summary(bm)$median
-ggplot(alldata, aes(x = algo, fill = algo, y = compression)) + 
-  geom_bar(color = "white", stat = "identity") +
-  xlab("") + ylab("Compression time (less is better)")
+# library(microbenchmark)
+# bm <- microbenchmark(
+#   memCompress(x, "gzip"),
+#   memCompress(x, "bzip2"),
+#   memCompress(x, "xz"),
+#   brotli_compress(x),
+#   times = 20
+# )
+# 
+# alldata$compression <- summary(bm)$median
+# ggplot(alldata, aes(x = algo, fill = algo, y = compression)) +
+#   geom_bar(color = "white", stat = "identity") +
+#   xlab("") + ylab("Compression time (less is better)")
 
